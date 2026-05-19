@@ -1,19 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
-
-contratos = []
-
-URL = "https://www.gov.br/saude/pt-br/acesso-a-informacao/licitacoes-e-contratos/contratos-dlog/dlog-2026"
-
-HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
-}
+from config import URL, BASE_URL, TIMEOUT, HEADERS, TERMO_INICIAL, FILTRO_URL_2026, CONTRATOS
 
 def capturar_contratos():
     try:
         print("Conectando ao site e analisando a estrutura...")
-        response = requests.get(URL, headers=HEADERS, timeout=30)
+        response = requests.get(URL, headers=HEADERS, timeout=TIMEOUT)
         response.raise_for_status()
 
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -27,25 +19,25 @@ def capturar_contratos():
             texto = link.get_text().strip()
             texto_minusculo = texto.lower()
 
-            if texto_minusculo.startswith("contrato nº") and "contratos-dlog/dlog-2026/" in href:
+            if texto_minusculo.startswith(TERMO_INICIAL) and FILTRO_URL_2026 in href:
                 link_final = link['href']
                 if not link_final.startswith('http'):
-                    link_final = "https://www.gov.br" + link_final
+                    link_final = BASE_URL + link_final
 
                 contador += 1
 
-                contratos.append((contador, texto, link_final))
+                CONTRATOS.append((contador, texto, link_final))
 
         if contador == 0:
             print("Nenhum contrato localizado.")
 
         else:
-            print(f"Sucesso! {contador} contratos encontrados.")
+            print(f"Sucesso! {len(CONTRATOS)} contratos encontrados.")
 
     except Exception as e:
         print(f"Erro: {e}")
 
-    for contador, texto, link_final in contratos:
+    for contador, texto, link_final in CONTRATOS:
         print(f"{contador}: {texto}\n{link_final}\n")
 
 if __name__ == "__main__":
