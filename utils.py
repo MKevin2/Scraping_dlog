@@ -8,5 +8,7 @@ def tempo_execucao(inicio):
     
     minutos = int(duracao // 60)
     segundos = int(duracao % 60)
+    milissegundos = int((duracao % 1) * 1000)
     
-    return f"{minutos}m {segundos}s"
+    return f"{minutos}m {segundos}s {milissegundos}ms"
+    

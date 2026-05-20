@@ -47,15 +47,17 @@ def capturar_contratos():
             print("Nenhum contrato localizado.")
 
         else:
-            logging.info(f"Sucesso! {len(CONTRATOS)} contratos encontrados")
+            logging.info(f"Contrato(s): {len(CONTRATOS)} encontrados.")
 
     except Exception as e:
         print(f"Erro: {e}")
         logging.error(f"Automação gerou um exceção! \n{e}")
         logging.info('------- ENCERRANDO -------')
 
-    for contador, titulo, link_final in CONTRATOS:
-        print(f"{contador}: {titulo}\n{link_final}\n")
+    finally:
+        
+        for contador, titulo, link_final in CONTRATOS:
+            print(f"{contador}: {titulo}\n{link_final}\n")
 
     tempo_total = tempo_execucao(inicio_execucao)
     logging.info(f'Tempo: {tempo_total}.')
