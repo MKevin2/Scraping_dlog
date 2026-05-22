@@ -1,11 +1,10 @@
+import os
 import time
 import requests
 from utils import tempo_execucao
 from bs4 import BeautifulSoup
 from config import URL, BASE_URL, TIMEOUT, HEADERS, TERMO_INICIAL, FILTRO_URL_2026, CONTRATOS
-
 import logging
-
 
 logging.basicConfig(
     level=logging.INFO, 
@@ -13,10 +12,13 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
+pasta_destino = "arquivos_dlog"
+os.makedirs
+
 def capturar_contratos():
 
     inicio_execucao = time.time()
-
+    
     try:
         logging.info('------- INICIANDO -------')
         print("\nConectando ao site e analisando a estrutura...\n")
@@ -40,6 +42,8 @@ def capturar_contratos():
                     link_final = BASE_URL + link_final
 
                 contador += 1
+
+                # logging.info(f'{contador}: {titulo}') -> retornaria o nome dos contratos a cada iteração dentro do arquivo de logging
 
                 CONTRATOS.append((contador, titulo, link_final))
 
