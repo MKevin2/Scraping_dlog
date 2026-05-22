@@ -1,28 +1,15 @@
-2026-05-19 15:57:53,330 - INFO - ------- INICIANDO -------
-2026-05-19 15:58:00,238 - INFO - Sucesso! 25 contratos encontrados
-2026-05-19 15:58:00,242 - INFO - Tempo: 0m 6s.
-2026-05-19 15:58:00,242 - INFO - ------- ENCERRANDO -------
-2026-05-20 10:30:06,509 - INFO - ------- INICIANDO -------
-2026-05-20 10:30:07,415 - INFO - Contrato(s): 25 encontrados.
-2026-05-20 10:30:07,420 - INFO - Tempo: 0m 0s.
-2026-05-20 10:30:07,421 - INFO - ------- ENCERRANDO -------
-2026-05-20 10:30:27,415 - INFO - ------- INICIANDO -------
-2026-05-20 10:30:28,038 - INFO - Contrato(s): 25 encontrados.
-2026-05-20 10:30:28,042 - INFO - Tempo: 0m 0s.
-2026-05-20 10:30:28,042 - INFO - ------- ENCERRANDO -------
-2026-05-20 10:31:23,422 - INFO - ------- INICIANDO -------
-2026-05-20 10:31:24,157 - INFO - Contrato(s): 25 encontrados.
-2026-05-20 10:31:24,159 - INFO - Tempo: 0m 0s.
-2026-05-20 10:31:24,159 - INFO - ------- ENCERRANDO -------
-2026-05-20 10:48:06,373 - INFO - ------- INICIANDO -------
-2026-05-20 10:48:07,210 - INFO - Contrato(s): 25 encontrados.
-2026-05-20 10:48:07,215 - INFO - Tempo: 0m 0s 842ms.
-2026-05-20 10:48:07,215 - INFO - ------- ENCERRANDO -------
-2026-05-20 10:48:23,206 - INFO - ------- INICIANDO -------
-2026-05-20 10:48:23,827 - INFO - Contrato(s): 25 encontrados.
-2026-05-20 10:48:23,830 - INFO - Tempo: 0m 0s 624ms.
-2026-05-20 10:48:23,830 - INFO - ------- ENCERRANDO -------
-2026-05-20 10:48:32,207 - INFO - ------- INICIANDO -------
-2026-05-20 10:48:32,832 - INFO - Contrato(s): 25 encontrados.
-2026-05-20 10:48:32,835 - INFO - Tempo: 0m 0s 628ms.
-2026-05-20 10:48:32,835 - INFO - ------- ENCERRANDO -------
+2026-05-20 10:54:21,376 - INFO - ------- INICIANDO -------
+2026-05-20 10:54:21,991 - INFO - Contrato(s): 25 encontrados.
+2026-05-20 10:54:21,995 - INFO - Tempo: 0m 0s 619ms.
+2026-05-20 10:54:21,995 - INFO - ------- ENCERRANDO -------
+
+2026-05-20 10:54:29,222 - INFO - ------- INICIANDO -------
+2026-05-20 10:54:29,836 - INFO - Contrato(s): 25 encontrados.
+2026-05-20 10:54:29,841 - INFO - Tempo: 0m 0s 619ms.
+2026-05-20 10:54:29,841 - INFO - ------- ENCERRANDO -------
+
+2026-05-20 10:54:41,462 - INFO - ------- INICIANDO -------
+2026-05-20 10:54:42,063 - INFO - Contrato(s): 25 encontrados.
+2026-05-20 10:54:42,067 - INFO - Tempo: 0m 0s 605ms.
+2026-05-20 10:54:42,067 - INFO - ------- ENCERRANDO -------
+

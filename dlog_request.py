@@ -52,7 +52,7 @@ def capturar_contratos():
     except Exception as e:
         print(f"Erro: {e}")
         logging.error(f"Automação gerou um exceção! \n{e}")
-        logging.info('------- ENCERRANDO -------')
+        logging.info('------- ENCERRANDO -------\n')
 
     finally:
         
@@ -61,7 +61,7 @@ def capturar_contratos():
 
     tempo_total = tempo_execucao(inicio_execucao)
     logging.info(f'Tempo: {tempo_total}.')
-    logging.info('------- ENCERRANDO -------')
+    logging.info('------- ENCERRANDO -------\n')
 
 if __name__ == "__main__":
     capturar_contratos()
