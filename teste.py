@@ -1,69 +1,102 @@
 import os
+import time
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import urljoin
+from utils import tempo_execucao
+from config import URL, BASE_URL, TIMEOUT, HEADERS, TERMO_INICIAL, FILTRO_URL_2026, CONTRATOS
+import logging
 
-# 1. URL correta da listagem de contratos DLOG 2026
-url_pagina = "https://www.gov.br/saude/pt-br/acesso-a-informacao/licitacoes-e-contratos/contratos-dlog/dlog-2026" 
+logging.basicConfig(
+    level=logging.INFO, 
+    filename='request.log', 
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
-# 2. Configuração de Headers robusta para evitar o bloqueio do Gov.br
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-    'Accept-Language': 'pt-PT,pt;q=0.8,en-US;q=0.5,en;q=0.3'
-}
+# Correção da criação da pasta destino principal
+pasta_destino_raiz = "arquivos_dlog"
+os.makedirs(pasta_destino_raiz, exist_ok=True)
 
-pasta_destino = "arquivos_dlog_2026"
-os.makedirs(pasta_destino, exist_ok=True)
-
-print("A aceder à página principal do DLOG...")
-resposta = requests.get(url_pagina, headers=headers)
-soup = BeautifulSoup(resposta.text, 'html.parser')
-
-# 3. Localizar os links dos contratos
-# No padrão do Gov.br, o conteúdo principal costuma estar dentro da ID 'parent-fieldname-text' ou classes similares
-links_encontrados = 0
-
-for link in soup.find_all('a'):
-    href = link.get('href')
-    texto_link = link.get_text().strip()
+def capturar_contratos():
+    inicio_execucao = time.time()
     
-    if href and "contrato" in href.lower():
-        url_contrato = urljoin(url_pagina, href)
+    try:
+        logging.info('------- INICIANDO -------')
+        print("\nConectando ao site e analisando a estrutura...\n")
+        response = requests.get(URL, headers=HEADERS, timeout=TIMEOUT)
+        response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, 'html.parser')
         
-        if "dlog-2026" in url_contrato:
-            print(f"\nA extrair informações de: {texto_link}")
+        links = soup.find_all('a', href=True)
+        contador = 0
+
+        for link in links:
+            href = link['href'].lower()
+            titulo = link.get_text().strip()
+            titulo_minusculo = titulo.lower()
+
+            # Mantém o seu filtro cirúrgico que evita pegar links indesejados
+            if titulo_minusculo.startswith(TERMO_INICIAL) and FILTRO_URL_2026 in href:
+                link_final = link['href']
+                if not link_final.startswith('http'):
+                    link_final = BASE_URL + link_final
+
+                contador += 1
+                CONTRATOS.append((contador, titulo, link_final))
+
+        if contador == 0:
+            print("Nenhum contrato localizado.")
+        else:
+            logging.info(f"Contrato(s): {len(CONTRATOS)} encontrados.")
+
+    except Exception as e:
+        print(f"Erro: {e}")
+        logging.error(f"Automação gerou uma exceção! \n{e}")
+        logging.info('------- ENCERRANDO -------\n')
+
+    finally:
+        print("Iniciando o download dos arquivos mapeados...\n")
+        
+        for contador, titulo, link_final in CONTRATOS:
+            print(f"{contador}: {titulo}\n{link_final}")
             
             try:
-                resposta_contrato = requests.get(url_contrato, headers=headers)
-                soup_contrato = BeautifulSoup(resposta_contrato.text, 'html.parser')
-                
-                conteudo_principal = soup_contrato.find(id="parent-fieldname-text")
-                if not conteudo_principal:
-                    conteudo_principal = soup_contrato.find(class_="parent-fieldname-text")
-                
-                if conteudo_principal:
-                    texto_completo = conteudo_principal.get_text(separator="\n").strip()
-                    
-                    # Define um nome seguro para o ficheiro de texto baseado no link
-                    nome_seguro = href.split('/')[-1] + ".txt"
-                    caminho_arquivo = os.path.join(pasta_destino, nome_seguro)
-                    
-                    # 5. Guarda a informação extraída no ficheiro
-                    with open(caminho_arquivo, 'w', encoding='utf-8') as f:
-                        f.write(f"Origem: {url_contrato}\n")
-                        f.write("-" * 50 + "\n")
-                        f.write(texto_completo)
-                    
-                    print(f"✅ Guardado com sucesso em: {nome_seguro}")
-                    links_encontrados += 1
-                else:
-                    print("⚠️ Não foi possível encontrar a caixa de texto principal deste contrato.")
-                    
-            except Exception as e:
-                print(f"❌ Erro ao aceder ao contrato {texto_link}: {e}")
+                # 1. Cria uma subpasta para cada contrato para manter organizado
+                # Remove caracteres que o sistema operacional proíbe em pastas
+                nome_pasta_limpo = "".join(c for c in titulo if c.isalnum() or c in (' ', '_', '-', '.')).strip()
+                pasta_contrato = os.path.join(pasta_destino_raiz, nome_pasta_limpo)
+                os.makedirs(pasta_contrato, exist_ok=True)
 
-if links_encontrados == 0:
-    print("\nNenhum contrato foi extraído. Verifique se a estrutura da página sofreu alterações.")
-else:
-    print(f"\nFim do processo. {links_encontrados} ficheiros guardados na pasta '{pasta_destino}'.")
+                # 2. Extrai o nome original do arquivo a partir da URL
+                nome_arquivo = link_final.split('/')[-1].split('?')[0]
+                
+                # 3. Lógica crucial: Se não terminar com .pdf, nós adicionamos!
+                if not nome_arquivo.lower().endswith('.pdf'):
+                    nome_arquivo += ".pdf"
+                
+                caminho_salvamento = os.path.join(pasta_contrato, nome_arquivo)
+                
+                # 4. Faz o download do binário (Stream)
+                print(f"-> Baixando e salvando como: {nome_arquivo}...")
+                with requests.get(link_final, headers=HEADERS, timeout=TIMEOUT, stream=True) as r:
+                    r.raise_for_status()
+                    with open(caminho_salvamento, 'wb') as f:
+                        for chunk in r.iter_content(chunk_size=8192):
+                            f.write(chunk)
+                
+                print("   ✅ Download concluído com sucesso.\n")
+                logging.info(f"Sucesso no download: {titulo} salvo como {nome_arquivo}")
+                
+                # Um pequeno delay de boa vizinhança para não sobrecarregar o servidor do Gov
+                time.sleep(0.5)
+
+            except Exception as e_download:
+                print(f"   ❌ Erro ao baixar este contrato: {e_download}\n")
+                logging.error(f"Erro no download do contrato {titulo}: {e_download}")
+
+        tempo_total = tempo_execucao(inicio_execucao)
+        logging.info(f'Tempo: {tempo_total}.')
+        logging.info('------- ENCERRANDO -------\n')
+
+if __name__ == "__main__":
+    capturar_contratos()

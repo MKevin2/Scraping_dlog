@@ -1,8 +1,8 @@
 import os
 import time
 import requests
-from utils import tempo_execucao
 from bs4 import BeautifulSoup
+from utils import tempo_execucao
 from config import URL, BASE_URL, TIMEOUT, HEADERS, TERMO_INICIAL, FILTRO_URL_2026, CONTRATOS
 import logging
 

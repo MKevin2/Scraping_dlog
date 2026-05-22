@@ -53,3 +53,35 @@
 2026-05-22 15:33:41,415 - INFO - Tempo: 0m 0s 675ms.
 2026-05-22 15:33:41,415 - INFO - ------- ENCERRANDO -------
 
+2026-05-22 15:45:33,197 - INFO - ------- INICIANDO -------
+2026-05-22 15:45:33,968 - INFO - Contrato(s): 25 encontrados.
+2026-05-22 15:45:34,553 - INFO - Sucesso no download: Contrato nº 33/2026 - Processo nº 25000.007619/2025-32 salvo como contrato-no-33-2026-processo-no-25000-007619-2025-32.pdf
+2026-05-22 15:45:35,622 - INFO - Sucesso no download: Contrato nº 32/2026 - Processo nº 25000.007619/2025-32 salvo como contrato-no-32-2026-processo-no-25000-007619-2025-32.pdf
+2026-05-22 15:45:36,713 - INFO - Sucesso no download: Contrato nº 30/2026 - Processo nº 25000.124481/2024-54 salvo como contrato-no-30-2026-processo-no-25000-124481-2024-54.pdf
+2026-05-22 15:45:37,784 - INFO - Sucesso no download: Contrato nº 28/2026 - Processo nº 25000.018755/2025-58 salvo como contrato-no-28-2026-processo-no-25000-018755-2025-58.pdf
+2026-05-22 15:45:38,968 - INFO - Sucesso no download: Contrato nº 26/2026 - Processo nº 25000.008573/2025-79 salvo como contrato-no-26-2026-processo-no-25000-008573-2025-79.pdf
+2026-05-22 15:45:40,213 - INFO - Sucesso no download: Contrato nº 22/2026 - Processo nº 25000.158380/2024-87 salvo como contrato-no-22-2026-processo-no-25000-158380-2024-87.pdf
+2026-05-22 15:45:41,328 - INFO - Sucesso no download: Contrato nº 10/2026 - Processo nº 25000.140694/2024-23 salvo como contrato-no-10-2026-processo-no-25000-140694-2024-23.pdf
+2026-05-22 15:45:42,389 - INFO - Sucesso no download: Contrato nº 025/2026 - Processo nº 25000.007943/2025-51 salvo como contrato-no-025-2026-processo-no-25000-007943-2025-51.pdf
+2026-05-22 15:45:43,477 - INFO - Sucesso no download: Contrato nº 021/2026 - Processo nº 25000.133443/2024-92 salvo como contrato-no-021-2026-processo-no-25000-133443-2024-92.pdf
+2026-05-22 15:45:44,537 - INFO - Sucesso no download: Contrato nº 018/2026 - Processo nº 25000.197291/2024-56 salvo como contrato-no-018-2026-processo-no-25000-197291-2024-56.pdf
+2026-05-22 15:45:45,638 - INFO - Sucesso no download: Contrato nº 017/2026 - Processo nº 25000.189295/2025-41 salvo como contrato-no-017-2026-processo-no-25000-189295-2025-41.pdf
+2026-05-22 15:45:46,718 - INFO - Sucesso no download: Contrato nº 016/2026 - Processo nº 25000.143472/2025-43 salvo como contrato-no-016-2026-processo-no-25000-143472-2025-43.pdf
+2026-05-22 15:45:47,808 - INFO - Sucesso no download: Contrato nº 015/2026 - Processo nº 25000.034147/2025-91 salvo como contrato-no-015-2026-processo-no-25000-034147-2025-91.pdf
+2026-05-22 15:45:48,868 - INFO - Sucesso no download: Contrato nº 014/2026 - Processo nº 25000.032302/2025-34 salvo como contrato-no-014-2026-processo-no-25000-032302-2025-34.pdf
+2026-05-22 15:45:49,930 - INFO - Sucesso no download: Contrato nº 013/2026 - Processo nº 25000.068860/2025-38 salvo como contrato-no-013-2026-processo-no-25000-068860-2025-38.pdf
+2026-05-22 15:45:50,990 - INFO - Sucesso no download: Contrato nº 012/2026 - Processo nº 25000.069348/2024-28 salvo como contrato-no-012-2026-processo-no-25000-069348-2024-28.pdf
+2026-05-22 15:45:52,071 - INFO - Sucesso no download: Contrato nº 011/2026 - Processo nº 25000.034909/2025-59 salvo como contrato-no-011-2026-processo-no-25000-034909-2025-59.pdf
+2026-05-22 15:45:53,153 - INFO - Sucesso no download: Contrato nº 009/2026 - Processo nº 25000.170026/2025-10 salvo como contrato-no-009-2026-processo-no-25000-170026-2025-10.pdf
+2026-05-22 15:45:54,233 - INFO - Sucesso no download: Contrato nº 008/2026 - Processo nº 25000.189280/2025-83 salvo como contrato-no-008-2026-processo-no-25000-189280-2025-83.pdf
+2026-05-22 15:45:55,463 - INFO - Sucesso no download: Contrato nº 007/2026 - Processo nº 25000.034237/2025-81 salvo como contrato-no-007-2026-processo-no-25000-034237-2025-81.pdf
+2026-05-22 15:45:56,520 - INFO - Sucesso no download: Contrato nº 005/2026 - Processo nº 25000.169424/2025-85 salvo como contrato-no-005-2026-processo-no-25000-169424-2025-85.pdf
+2026-05-22 15:45:57,588 - INFO - Sucesso no download: Contrato nº 004/2026 - Processo nº 25000.050603/2025-40 salvo como contrato-no-004-2026-processo-no-25000-050603-2025-40.pdf
+2026-05-22 15:45:58,666 - INFO - Sucesso no download: Contrato nº 003/2026 - Processo nº 25000.156659/2025-15 salvo como contrato-no-003-2026-processo-no-25000-156659-2025-15.pdf
+2026-05-22 15:45:59,729 - INFO - Sucesso no download: Contrato nº 002/2026 - Processo nº 25000.169194/2025-54 salvo como contrato-no-002-2026-processo-no-25000-169194-2025-54.pdf
+2026-05-22 15:46:00,783 - INFO - Sucesso no download: Contrato nº 001/2026 - Processo nº 25000.091029/2025-80 salvo como contrato-no-001-2026-processo-no-25000-091029-2025-80.pdf
+2026-05-22 15:46:01,284 - INFO - Tempo: 0m 28s 87ms.
+2026-05-22 15:46:01,284 - INFO - ------- ENCERRANDO -------
+
+2026-05-22 15:49:06,456 - INFO - ------- INICIANDO -------
+2026-05-22 15:49:07,206 - INFO - Contrato(s): 25 encontrados.
