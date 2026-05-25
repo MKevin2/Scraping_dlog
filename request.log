@@ -85,3 +85,84 @@
 
 2026-05-22 15:49:06,456 - INFO - ------- INICIANDO -------
 2026-05-22 15:49:07,206 - INFO - Contrato(s): 25 encontrados.
+2026-05-25 11:11:45,301 - INFO - ------- INICIANDO -------
+2026-05-25 11:11:46,094 - INFO - Contrato(s): 25 encontrados.
+2026-05-25 11:11:46,103 - INFO - Tempo: 0m 0s 802ms.
+2026-05-25 11:11:46,103 - INFO - ------- ENCERRANDO -------
+
+2026-05-25 11:12:16,812 - INFO - ------- INICIANDO -------
+2026-05-25 11:12:17,703 - INFO - Contrato(s): 25 encontrados.
+2026-05-25 11:12:17,706 - INFO - Tempo: 0m 0s 894ms.
+2026-05-25 11:12:17,706 - INFO - ------- ENCERRANDO -------
+
+2026-05-25 11:14:07,673 - INFO - ------- INICIANDO -------
+2026-05-25 11:14:08,406 - INFO - Tempo: 0m 0s 732ms.
+2026-05-25 11:14:08,406 - INFO - ------- ENCERRANDO -------
+
+2026-05-25 11:14:35,452 - INFO - ------- INICIANDO -------
+2026-05-25 11:14:36,082 - INFO - Contrato(s): 30 encontrados.
+2026-05-25 11:14:36,085 - INFO - Tempo: 0m 0s 632ms.
+2026-05-25 11:14:36,085 - INFO - ------- ENCERRANDO -------
+
+2026-05-25 11:18:20,877 - INFO - ------- INICIANDO -------
+2026-05-25 11:18:21,638 - INFO - Contrato(s): 25 encontrados.
+2026-05-25 11:19:16,122 - INFO - Tempo: 0m 55s 244ms.
+2026-05-25 11:19:16,122 - INFO - ------- ENCERRANDO -------
+
+2026-05-25 11:21:10,176 - INFO - ------- INICIANDO -------
+2026-05-25 11:21:10,916 - INFO - Contrato(s): 25 encontrados.
+2026-05-25 11:21:26,528 - INFO - Tempo: 0m 16s 352ms.
+2026-05-25 11:21:26,528 - INFO - ------- ENCERRANDO -------
+
+2026-05-25 11:22:30,909 - INFO - ------- INICIANDO -------
+2026-05-25 11:22:31,531 - INFO - Contrato(s): 25 encontrados.
+2026-05-25 11:23:00,868 - INFO - Tempo: 0m 29s 958ms.
+2026-05-25 11:23:00,868 - INFO - ------- ENCERRANDO -------
+
+2026-05-25 11:24:24,906 - INFO - ------- INICIANDO -------
+2026-05-25 11:24:28,683 - INFO - Contrato(s): 25 encontrados.
+2026-05-25 11:26:33,151 - INFO - ------- INICIANDO -------
+2026-05-25 11:26:33,796 - INFO - Contrato(s): 25 encontrados.
+2026-05-25 11:27:22,838 - INFO - Tempo: 0m 49s 686ms.
+2026-05-25 11:27:22,838 - INFO - ------- ENCERRANDO -------
+
+2026-05-25 11:30:17,882 - INFO - ------- INICIANDO -------
+2026-05-25 11:30:18,546 - INFO - Contrato(s): 25 encontrados.
+2026-05-25 11:31:06,476 - INFO - Tempo: 0m 48s 594ms.
+2026-05-25 11:31:06,476 - INFO - ------- ENCERRANDO -------
+
+2026-05-25 11:35:08,245 - INFO - ------- INICIANDO -------
+2026-05-25 11:35:08,968 - INFO - Contrato(s): 25 encontrados.
+2026-05-25 11:35:08,973 - ERROR - Erro no processamento do contrato Contrato nº 33/2026 - Processo nº 25000.007619/2025-32: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,973 - ERROR - Erro no processamento do contrato Contrato nº 32/2026 - Processo nº 25000.007619/2025-32: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,973 - ERROR - Erro no processamento do contrato Contrato nº 30/2026 - Processo nº 25000.124481/2024-54: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,974 - ERROR - Erro no processamento do contrato Contrato nº 28/2026 - Processo nº 25000.018755/2025-58: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,974 - ERROR - Erro no processamento do contrato Contrato nº 26/2026 - Processo nº 25000.008573/2025-79: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,974 - ERROR - Erro no processamento do contrato Contrato nº 22/2026 - Processo nº 25000.158380/2024-87: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,975 - ERROR - Erro no processamento do contrato Contrato nº 10/2026 - Processo nº 25000.140694/2024-23: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,975 - ERROR - Erro no processamento do contrato Contrato nº 025/2026 - Processo nº 25000.007943/2025-51: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,976 - ERROR - Erro no processamento do contrato Contrato nº 021/2026 - Processo nº 25000.133443/2024-92: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,976 - ERROR - Erro no processamento do contrato Contrato nº 018/2026 - Processo nº 25000.197291/2024-56: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,976 - ERROR - Erro no processamento do contrato Contrato nº 017/2026 - Processo nº 25000.189295/2025-41: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,977 - ERROR - Erro no processamento do contrato Contrato nº 016/2026 - Processo nº 25000.143472/2025-43: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,977 - ERROR - Erro no processamento do contrato Contrato nº 015/2026 - Processo nº 25000.034147/2025-91: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,977 - ERROR - Erro no processamento do contrato Contrato nº 014/2026 - Processo nº 25000.032302/2025-34: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,978 - ERROR - Erro no processamento do contrato Contrato nº 013/2026 - Processo nº 25000.068860/2025-38: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,978 - ERROR - Erro no processamento do contrato Contrato nº 012/2026 - Processo nº 25000.069348/2024-28: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,979 - ERROR - Erro no processamento do contrato Contrato nº 011/2026 - Processo nº 25000.034909/2025-59: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,980 - ERROR - Erro no processamento do contrato Contrato nº 009/2026 - Processo nº 25000.170026/2025-10: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,981 - ERROR - Erro no processamento do contrato Contrato nº 008/2026 - Processo nº 25000.189280/2025-83: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,981 - ERROR - Erro no processamento do contrato Contrato nº 007/2026 - Processo nº 25000.034237/2025-81: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,981 - ERROR - Erro no processamento do contrato Contrato nº 005/2026 - Processo nº 25000.169424/2025-85: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,982 - ERROR - Erro no processamento do contrato Contrato nº 004/2026 - Processo nº 25000.050603/2025-40: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,982 - ERROR - Erro no processamento do contrato Contrato nº 003/2026 - Processo nº 25000.156659/2025-15: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,982 - ERROR - Erro no processamento do contrato Contrato nº 002/2026 - Processo nº 25000.169194/2025-54: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,983 - ERROR - Erro no processamento do contrato Contrato nº 001/2026 - Processo nº 25000.091029/2025-80: cannot access local variable 'pasta_contrato' where it is not associated with a value
+2026-05-25 11:35:08,983 - INFO - Tempo: 0m 0s 737ms.
+2026-05-25 11:35:08,983 - INFO - ------- ENCERRANDO -------
+
+2026-05-25 11:37:18,035 - INFO - ------- INICIANDO -------
+2026-05-25 11:37:18,812 - INFO - Contrato(s): 25 encontrados.
+2026-05-25 11:38:10,672 - INFO - Tempo: 0m 52s 636ms.
+2026-05-25 11:38:10,672 - INFO - ------- ENCERRANDO -------
+
