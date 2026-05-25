@@ -55,8 +55,6 @@ def capturar_contratos():
 
     finally:
         if CONTRATOS:
-            print(f"Iniciando o processamento de {len(CONTRATOS)} contratos mapeados...\n")
-
             pasta_pdfs = os.path.join(pasta_destino_raiz, "pdfs")
             pasta_resumos = os.path.join(pasta_destino_raiz, "resumos")
             
@@ -113,12 +111,15 @@ def capturar_contratos():
                                         with open(caminho_pdf, 'wb') as f_pdf:
                                             for chunk in res_anexo.iter_content(chunk_size=8192):
                                                 f_pdf.write(chunk)
-                                                
+
                                         print(f"      ✅ Arquivo salvo em: pdfs/{nome_pdf}")
-                                        anexos_baixados += 1
+                                        logging.info(f"Arquivo PDF salvo: {link_anexo.get_text().strip()}")
+                                        anexos_baixados += 1      
                                         
                                 except Exception as error_anexo:
                                     print(f"      ❌ Erro ao tentar acessar o link do anexo: {error_anexo}")
+                                    logging.error(f"Automação gerou uma exceção! \n{e}")
+                                    logging.info('------- ENCERRANDO -------\n')
                             
                             if anexos_baixados == 0:
                                 print("   ⚠️ Nenhum anexo de arquivo válido foi localizado dentro do texto da página.")
@@ -142,6 +143,7 @@ def capturar_contratos():
                 except Exception as e_download:
                     print(f"   ❌ Erro ao processar o download deste contrato: {e_download}\n")
                     logging.error(f"Erro no processamento do contrato {titulo}: {e_download}")
+                    logging.info('------- ENCERRANDO -------\n')
 
         tempo_total = tempo_execucao(inicio_execucao)
         logging.info(f'Tempo: {tempo_total}.')
