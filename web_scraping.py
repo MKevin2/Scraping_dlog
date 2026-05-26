@@ -1,11 +1,11 @@
 import os
 import time
+import logging
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import urljoin
 from utils import tempo_execucao
+from urllib.parse import urljoin
 from config import URL, BASE_URL, TIMEOUT, HEADERS, TERMO_INICIAL, FILTRO_URL_2026, CONTRATOS
-import logging
 
 logging.basicConfig(
     level=logging.INFO, 
@@ -67,16 +67,16 @@ def capturar_contratos():
                 titulo_limpo = "".join(c for c in titulo if c.isalnum() or c in (' ', '_', '-', '.')).strip().replace(" ", "_")
                 
                 try:
-                    response_conteudo = requests.get(link_final, headers=HEADERS, timeout=TIMEOUT)
-                    response_conteudo.raise_for_status()
+                    conteudo_requisicao = requests.get(link_final, headers=HEADERS, timeout=TIMEOUT)
+                    conteudo_requisicao.raise_for_status()
                     
-                    content_type = response_conteudo.headers.get('Content-Type', '').lower()
+                    tipo_resposta = conteudo_requisicao.headers.get('Content-Type', '').lower()
                     
                     # CASO A: É uma página de resumo em HTML
-                    if 'html' in content_type:
+                    if 'html' in tipo_resposta:
                         print("   -> Página de resumo detectada. Procurando anexos reais...")
                         
-                        soup_interno = BeautifulSoup(response_conteudo.text, 'html.parser')
+                        soup_interno = BeautifulSoup(conteudo_requisicao.text, 'html.parser')
                         area_conteudo = soup_interno.find(id="parent-fieldname-text") or soup_interno.find(class_="parent-fieldname-text")
                         
                         if area_conteudo:
@@ -126,19 +126,19 @@ def capturar_contratos():
                         else:
                             print("   ❌ Não foi possível mapear o corpo do texto desta página.")
 
-                    # CASO B: É o PDF direto (como o caso do Contrato 01)
+                    # CASO B: É o PDF direto
                     else:
                         print("   -> PDF direto detectado. Baixando arquivo...")
                         nome_arquivo_base = f"{titulo_limpo}.pdf"
                         caminho_salvamento = os.path.join(pasta_pdfs, nome_arquivo_base)
                         
                         with open(caminho_salvamento, 'wb') as f:
-                            f.write(response_conteudo.content)
+                            f.write(conteudo_requisicao.content)
                             
                         print(f"   ✅ PDF direto baixado com sucesso: pdfs/{nome_arquivo_base}")
                     
                     print("-" * 50 + "\n")
-                    time.sleep(0.5)
+                    time.sleep(0.5) # Para não bloquear as requisições
 
                 except Exception as e_download:
                     print(f"   ❌ Erro ao processar o download deste contrato: {e_download}\n")
