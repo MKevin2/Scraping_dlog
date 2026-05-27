@@ -2,11 +2,11 @@ import os
 import time
 import logging
 import requests
+import numpy as np
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
-
 from utils import inicializar_diretorios, tempo_execucao
-from config import CONTRATOS_25, CONTRATOS_26, FILTRO_URL_25, FILTRO_URL_26, BASE_URL, PASTA_PDFS, PASTA_RESUMOS, TIMEOUT, HEADERS, TERMO_INICIAL, CONTRATOS, URL25, URL26
+from config import CONTRATOS_25, CONTRATOS_26, FILTRO_URL_25, FILTRO_URL_26, URL_25, URL_26, BASE_URL, PASTA_PDFS, PASTA_RESUMOS, TIMEOUT, HEADERS, TERMO_INICIAL, CONTRATOS, links, links_25
 
 logging.basicConfig(
     level=logging.INFO, 
@@ -167,10 +167,20 @@ def capturar_contratos():
     print("\nConectando ao site e analisando a estrutura...\n")
     
     try:
-        links_25 = extrair_links(URL25)
-        links_26 = extrair_links(URL26)
 
-        total_encontrados = filtrar_e_classificar_links(links_25, links_26)
+        array_paginas = np.arange(0, 331, 30, dtype=int)
+        lista_array = [int(x) for x in array_paginas]
+
+        for pag in lista_array:
+            links.append(f'{URL_25}?b_start:int={pag}')
+
+        for extracao in links:
+            lista_extraida = extrair_links(extracao)
+            links_25.extend(lista_extraida)
+
+        links_26 = extrair_links(URL_26)
+
+        total_encontrados = filtrar_e_classificar_links(links_26, links_25)
 
         if total_encontrados == 0:
             logging.info("Nenhum contrato localizado.")

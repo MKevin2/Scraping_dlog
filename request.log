@@ -554,3 +554,20 @@ list indices must be integers or slices, not str
 2026-05-27 11:56:33,780 - INFO - Tempo: 0m 5s 156ms.
 2026-05-27 11:56:33,780 - INFO - ------- ENCERRANDO -------
 
+2026-05-27 13:47:27,828 - INFO - ------- INICIANDO -------
+2026-05-27 13:47:27,830 - ERROR - Automação gerou uma exceção geral! 
+cannot access local variable 'links_25' where it is not associated with a value
+2026-05-27 13:47:27,830 - INFO - Tempo: 0m 0s 2ms.
+2026-05-27 13:47:27,831 - INFO - ------- ENCERRANDO -------
+
+2026-05-27 13:47:59,899 - INFO - ------- INICIANDO -------
+2026-05-27 13:48:08,201 - ERROR - Automação gerou uma exceção geral! 
+list indices must be integers or slices, not str
+2026-05-27 13:48:08,201 - INFO - Tempo: 0m 8s 302ms.
+2026-05-27 13:48:08,201 - INFO - ------- ENCERRANDO -------
+
+2026-05-27 14:07:31,371 - INFO - ------- INICIANDO -------
+2026-05-27 14:07:39,674 - INFO - Contrato(s): 370 encontrados.
+2026-05-27 14:24:58,012 - INFO - Tempo: 17m 26s 641ms.
+2026-05-27 14:24:58,012 - INFO - ------- ENCERRANDO -------
+
