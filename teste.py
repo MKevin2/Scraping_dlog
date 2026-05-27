@@ -3,9 +3,10 @@ import time
 import logging
 import requests
 from bs4 import BeautifulSoup
-from utils import tempo_execucao
 from urllib.parse import urljoin
-from config import URL, BASE_URL, TIMEOUT, HEADERS, TERMO_INICIAL, FILTRO_URL_2026, CONTRATOS
+
+from utils import inicializar_diretorios, tempo_execucao
+from config import CONTRATOS_25, CONTRATOS_26, FILTRO_URL_25, FILTRO_URL_26, BASE_URL, PASTA_PDFS, PASTA_RESUMOS, TIMEOUT, HEADERS, TERMO_INICIAL, CONTRATOS, URL25, URL26
 
 logging.basicConfig(
     level=logging.INFO, 
@@ -13,138 +14,180 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
-pasta_destino_raiz = "arquivos_dlog"
-os.makedirs(pasta_destino_raiz, exist_ok=True)
+def extrair_links(url):
+
+    try:
+        response = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        return soup.find_all('a', href=True)
+    
+    except Exception as e:
+        logging.error(f"Erro ao acessar a URL {url}: {e}")
+        print(f"Erro ao conectar com {url}: {e}")
+        
+        return []
+
+
+def filtrar_e_classificar_links(links_25, links_26):
+
+    contador = 0
+
+    for link in (links_25 + links_26):
+        href = link['href'].lower()
+        titulo = link.get_text().strip()
+        titulo_minusculo = titulo.lower()
+
+        if not titulo_minusculo.startswith(TERMO_INICIAL):
+            continue
+
+        link_final = link['href'] if link['href'].startswith('http') else BASE_URL + link['href']
+
+        if FILTRO_URL_26 in href:
+            contador += 1
+            CONTRATOS_26.append((contador, titulo, link_final))
+            CONTRATOS.append((contador, titulo, link_final))
+
+        elif FILTRO_URL_25 in href:
+            contador += 1
+            CONTRATOS_25.append((contador, titulo, link_final))
+            CONTRATOS.append((contador, titulo, link_final))
+
+    return contador
+
+
+def limpar_nome_arquivo(titulo):
+
+    caracteres_validos = "".join(c for c in titulo if c.isalnum() or c in (' ', '_', '-', '.'))
+    
+    return caracteres_validos.strip().replace(" ", "_")
+
+
+def baixar_anexo_pdf(url_anexo, titulo_limpo, link_origem):
+
+    try:
+        res_anexo = requests.get(url_anexo, headers=HEADERS, timeout=TIMEOUT, stream=True)
+        tipo_anexo = res_anexo.headers.get('Content-Type', '').lower()
+        
+        if 'pdf' in tipo_anexo or 'application/octet-stream' in tipo_anexo or 'download' in url_anexo.lower():
+            caminho_pdf = os.path.join(PASTA_PDFS, f"{titulo_limpo}.pdf")
+            print("      ↳ [CONFIRMADO] Baixando arquivo PDF do anexo...")
+            
+            with open(caminho_pdf, 'wb') as f_pdf:
+                for chunk in res_anexo.iter_content(chunk_size=8192):
+                    f_pdf.write(chunk)
+            
+            print(f"      ✅ Arquivo salvo em: pdfs/{titulo_limpo}.pdf")
+            return True
+        
+    except Exception as e:
+        print(f"      ❌ Erro ao acessar anexo: {e}")
+
+    return False
+
+
+def processar_pagina_resumo(html_text, titulo_limpo, url_origem):
+
+    soup_interno = BeautifulSoup(html_text, 'html.parser')
+    area_conteudo = soup_interno.find(id="parent-fieldname-text") or soup_interno.find(class_="parent-fieldname-text")
+    
+    if not area_conteudo:
+        print("   ❌ Não foi possível mapear o corpo do texto desta página.")
+        
+        return
+
+    texto_resumo = area_conteudo.get_text(separator="\n").strip()
+    nome_txt = f"{titulo_limpo}_resumo.txt"
+    
+    with open(os.path.join(PASTA_RESUMOS, nome_txt), 'w', encoding='utf-8') as f:
+        f.write(texto_resumo)
+
+    print(f"   ✅ Resumo salvo em: resumos/{nome_txt}")
+
+    links_anexos = area_conteudo.find_all('a', href=True)
+    anexos_baixados = 0
+    
+    for link_anexo in links_anexos:
+        url_anexo_completa = urljoin(url_origem, link_anexo['href'])
+        
+        if any(excluir in url_anexo_completa.lower() for excluir in ['#', 'facebook', 'twitter', 'whatsapp', 'compartilhar']):
+            continue
+            
+        print(f"      ↳ Analisando anexo potencial: {link_anexo.get_text().strip()}")
+        
+        if baixar_anexo_pdf(url_anexo_completa, titulo_limpo, url_origem):
+            anexos_baixados += 1
+
+    if anexos_baixados == 0:
+        print("   ⚠️ Nenhum anexo de arquivo válido foi localizado dentro do texto da página.")
+
+
+def baixar_contratos():
+    if not CONTRATOS:
+        
+        return
+
+    inicializar_diretorios()
+
+    for contador, titulo, link_final in CONTRATOS:
+        print(f"{contador}: {titulo}\nURL: {link_final}")
+        titulo_limpo = limpar_nome_arquivo(titulo)
+        
+        try:
+            resposta = requests.get(link_final, headers=HEADERS, timeout=TIMEOUT)
+            resposta.raise_for_status()
+            tipo_resposta = resposta.headers.get('Content-Type', '').lower()
+            
+            if 'html' in tipo_resposta:
+                print("   -> Página de resumo detectada. Procurando anexos reais...")
+                processar_pagina_resumo(resposta.text, titulo_limpo, link_final)
+            
+            else:
+                print("   -> PDF direto detectado. Baixando arquivo...")
+                caminho_salvamento = os.path.join(PASTA_PDFS, f"{titulo_limpo}.pdf")
+                
+                with open(caminho_salvamento, 'wb') as f:
+                    f.write(resposta.content)
+                
+                print(f"   ✅ PDF direto baixado com sucesso: pdfs/{titulo_limpo}.pdf")
+            
+            print("-" * 50 + "\n")
+            time.sleep(0.5)
+
+        except Exception as e_download:
+            
+            print(f"   ❌ Erro ao processar este contrato: {e_download}\n")
+            logging.error(f"Erro no processamento do contrato {titulo}: {e_download}")
+
 
 def capturar_contratos():
     inicio_execucao = time.time()
+    logging.info('------- INICIANDO -------')
+    print("\nConectando ao site e analisando a estrutura...\n")
     
     try:
-        logging.info('------- INICIANDO -------')
-        print("\nConectando ao site e analisando a estrutura...\n")
-        response = requests.get(URL, headers=HEADERS, timeout=TIMEOUT)
-        response.raise_for_status()
+        links_25 = extrair_links(URL25)
+        links_26 = extrair_links(URL26)
 
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        links = soup.find_all('a', href=True)
-        contador = 0
+        total_encontrados = filtrar_e_classificar_links(links_25, links_26)
 
-        for link in links:
-            href = link['href'].lower()
-            titulo = link.get_text().strip() # Extrai o texto clicável tirando os espaços com o strip()
-            titulo_minusculo = titulo.lower()
-
-            if titulo_minusculo.startswith(TERMO_INICIAL) and FILTRO_URL_2026 in href:
-                link_final = link['href']
-                if not link_final.startswith('http'):
-                    link_final = BASE_URL + link_final
-
-                contador += 1
-                CONTRATOS.append((contador, titulo, link_final))
-
-        if contador == 0:
+        if total_encontrados == 0:
             logging.info("Nenhum contrato localizado.")
-        else:
-            logging.info(f"Contrato(s): {len(CONTRATOS)} encontrados.")
+            
+            print("Nenhum contrato localizado.")
+            
+            return
+            
+        logging.info(f"Contrato(s): {len(CONTRATOS)} encontrados.")
+
+        baixar_contratos()
 
     except Exception as e:
         print(f"Erro na captura principal: {e}")
-        logging.error(f"Automação gerou uma exceção! \n{e}")
-        logging.info('------- ENCERRANDO -------\n')
-
+        logging.error(f"Automação gerou uma exceção geral! \n{e}")
+    
     finally:
-        if CONTRATOS:
-            pasta_pdfs = os.path.join(pasta_destino_raiz, "pdfs")
-            pasta_resumos = os.path.join(pasta_destino_raiz, "resumos")
-            
-            os.makedirs(pasta_pdfs, exist_ok=True)
-            os.makedirs(pasta_resumos, exist_ok=True)
-            
-            for contador, titulo, link_final in CONTRATOS:
-                print(f"{contador}: {titulo}\nURL: {link_final}")
-                
-                titulo_limpo = "".join(c for c in titulo if c.isalnum() or c in (' ', '_', '-', '.')).strip().replace(" ", "_")
-                
-                try:
-                    resposta_requisicao = requests.get(link_final, headers=HEADERS, timeout=TIMEOUT)
-                    resposta_requisicao.raise_for_status()
-                    
-                    tipo_resposta = resposta_requisicao.headers.get('Content-Type', '').lower()
-                    
-                    # CASO A: É uma página de resumo em HTML
-                    if 'html' in tipo_resposta:
-                        print("   -> Página de resumo detectada. Procurando anexos reais...")
-                        
-                        soup_interno = BeautifulSoup(resposta_requisicao.text, 'html.parser')
-                        area_conteudo = soup_interno.find(id="parent-fieldname-text") or soup_interno.find(class_="parent-fieldname-text")
-                        
-                        if area_conteudo:
-                            texto_resumo = area_conteudo.get_text(separator="\n").strip()
-                            nome_txt = f"{titulo_limpo}_resumo.txt"
-                            
-                            with open(os.path.join(pasta_resumos, nome_txt), 'w', encoding='utf-8') as f:
-                                f.write(texto_resumo)
-                            print(f"      ✅ Resumo salvo em: resumos/{nome_txt}")
-                            
-                            links_anexos = area_conteudo.find_all('a', href=True)
-                            anexos_baixados = 0
-                            
-                            for link_anexo in links_anexos:
-                                href_anexo = link_anexo['href']
-                                url_anexo_completa = urljoin(link_final, href_anexo)
-                                
-                                if any(excluir in url_anexo_completa.lower() for excluir in ['#', 'facebook', 'twitter', 'whatsapp', 'compartilhar']):
-                                    continue
-                                    
-                                print(f"      ↳ Analisando anexo potencial: {link_anexo.get_text().strip()}")
-                                
-                                try:
-                                    res_anexo = requests.get(url_anexo_completa, headers=HEADERS, timeout=TIMEOUT, stream=True)
-                                    tipo_anexo = res_anexo.headers.get('Content-Type', '').lower()
-                                    
-                                    if 'pdf' in tipo_anexo or 'application/octet-stream' in tipo_anexo or 'download' in url_anexo_completa.lower():
-                                        nome_pdf = f"{titulo_limpo}.pdf"
-                                        caminho_pdf = os.path.join(pasta_pdfs, nome_pdf)
-                                        
-                                        print(f"      ↳ [CONFIRMADO] Baixando arquivo PDF do anexo...")
-                                        with open(caminho_pdf, 'wb') as f_pdf:
-                                            for chunk in res_anexo.iter_content(chunk_size=8192): # Escreve em pedaços
-                                                f_pdf.write(chunk)
-
-                                        print(f"      ✅ Arquivo salvo em: pdfs/{nome_pdf}")
-                                        logging.info(f"Arquivo PDF salvo: {link_anexo.get_text().strip()}")
-                                        anexos_baixados += 1      
-                                        
-                                except Exception as error_anexo:
-                                    print(f"      ❌ Erro ao tentar acessar o link do anexo: {error_anexo}")
-                                    logging.error(f"Automação gerou uma exceção! \n{e}")
-                                    logging.info('------- ENCERRANDO -------\n')
-                            
-                            if anexos_baixados == 0:
-                                print("   ⚠️ Nenhum anexo de arquivo válido foi localizado dentro do texto da página.")
-                        else:
-                            print("   ❌ Não foi possível mapear o corpo do texto desta página.")
-
-                    # CASO B: É o PDF direto
-                    else:
-                        print("   -> PDF direto detectado. Baixando arquivo...")
-                        nome_arquivo_base = f"{titulo_limpo}.pdf"
-                        caminho_salvamento = os.path.join(pasta_pdfs, nome_arquivo_base)
-                        
-                        with open(caminho_salvamento, 'wb') as f:
-                            f.write(resposta_requisicao.content)
-                            
-                        print(f"   ✅ PDF direto baixado com sucesso: pdfs/{nome_arquivo_base}")
-                    
-                    print("-" * 50 + "\n")
-                    time.sleep(0.5)
-
-                except Exception as e_download:
-                    print(f"   ❌ Erro ao processar o download deste contrato: {e_download}\n")
-                    logging.error(f"Erro no processamento do contrato {titulo}: {e_download}")
-                    logging.info('------- ENCERRANDO -------\n')
-
         tempo_total = tempo_execucao(inicio_execucao)
         logging.info(f'Tempo: {tempo_total}.')
         logging.info('------- ENCERRANDO -------\n')

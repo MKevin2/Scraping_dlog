@@ -1,5 +1,7 @@
-import time
 import os
+import time
+from config import PASTA_PDFS
+from config import PASTA_RESUMOS
 
 def tempo_execucao(inicio):
     
@@ -11,4 +13,10 @@ def tempo_execucao(inicio):
     milissegundos = int((duracao % 1) * 1000)
     
     return f"{minutos}m {segundos}s {milissegundos}ms"
+
+
+def inicializar_diretorios():
+    os.makedirs(PASTA_PDFS, exist_ok=True)
+    os.makedirs(PASTA_RESUMOS, exist_ok=True)
+
     

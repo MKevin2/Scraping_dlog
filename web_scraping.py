@@ -44,6 +44,7 @@ def capturar_contratos():
                 CONTRATOS.append((contador, titulo, link_final))
 
         if contador == 0:
+            logging.info("Nenhum contrato localizado.")
             print("Nenhum contrato localizado.")
         else:
             logging.info(f"Contrato(s): {len(CONTRATOS)} encontrados.")
@@ -122,9 +123,11 @@ def capturar_contratos():
                                     logging.info('------- ENCERRANDO -------\n')
                             
                             if anexos_baixados == 0:
-                                print("   ⚠️ Nenhum anexo de arquivo válido foi localizado dentro do texto da página.")
+                                print("      ⚠️ Nenhum anexo de arquivo válido foi localizado dentro do texto da página.")
+                                logging.warning("⚠️ Nenhum anexo de arquivo válido foi localizado dentro do texto da página.")
                         else:
                             print("   ❌ Não foi possível mapear o corpo do texto desta página.")
+                            logging.error("❌ Não foi possível mapear o corpo do texto desta página.")
 
                     # CASO B: É o PDF direto
                     else:
